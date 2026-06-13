@@ -6,39 +6,37 @@ TOKEN = "BU_YERGA_TOKENINGIZNI_QOYING"
 
 logging.basicConfig(level=logging.INFO)
 
-# Conversation states
 ASK_NAME, ASK_PHONE, ASK_MODEL, ASK_SIZE = range(4)
 
 CATALOG = """
 👟 *G.Style.uz Katalog*
 
 *Nike:*
-• Air Force 1 — 850,000 so'm
-• Air Max 270 — 950,000 so'm
-• Dunk Low — 900,000 so'm
+• Air Force 1
+• Air Max 270
+• Dunk Low
 
 *Adidas:*
-• Samba — 800,000 so'm
-• Gazelle — 750,000 so'm
-• NMD R1 — 950,000 so'm
+• Samba
+• Gazelle
+• NMD R1
 
 *New Balance:*
-• 574 — 700,000 so'm
-• 990 — 1,100,000 so'm
+• 574
+• 990
 
 *Jordan:*
-• Air Jordan 1 Retro — 1,200,000 so'm
-• Jordan 4 — 1,300,000 so'm
+• Air Jordan 1 Retro
+• Jordan 4
 
-📦 Yetkazib berish: Toshkent bo'ylab bepul!
+📩 Narx va mavjudlik uchun buyurtma bering yoki savol yozing!
 """
 
 INFO = """
 📍 *G.Style.uz haqida*
 
-📌 Manzil: Toshkent sh., (Instagram: @G.style.uz)
+📌 Instagram: @G.style.uz
 ⏰ Ish vaqti: 10:00 — 21:00 (har kuni)
-📱 Instagram: @G.style.uz
 📞 Telefon: +998 90 000 00 00
 
 ✅ 100% original krossovkalar
@@ -48,7 +46,7 @@ INFO = """
 
 def main_menu():
     keyboard = [
-        [InlineKeyboardButton("👟 Katalog va narxlar", callback_data="catalog")],
+        [InlineKeyboardButton("👟 Katalog", callback_data="catalog")],
         [InlineKeyboardButton("🛒 Buyurtma berish", callback_data="order")],
         [InlineKeyboardButton("📍 Manzil va ish vaqti", callback_data="info")],
         [InlineKeyboardButton("❓ Savol berish", callback_data="question")],
@@ -114,10 +112,6 @@ async def ask_size(update: Update, context: ContextTypes.DEFAULT_TYPE):
 Tez orada siz bilan bog'lanamiz! 🙏"""
 
     await update.message.reply_text(summary, parse_mode="Markdown", reply_markup=main_menu())
-
-    # Admin ga xabar yuborish (o'zingizning Telegram ID ni qo'ying)
-    # await context.bot.send_message(chat_id=ADMIN_ID, text=f"Yangi buyurtma!\n{summary}")
-
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
