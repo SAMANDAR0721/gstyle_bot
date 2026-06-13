@@ -1,8 +1,9 @@
 import logging
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes, ConversationHandler
 
-TOKEN = "BU_YERGA_TOKENINGIZNI_QOYING"
+TOKEN = os.environ.get("TOKEN")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -36,12 +37,12 @@ INFO = """
 📍 *G.Style.uz haqida*
 
 📌 Instagram: @G.style.uz
-⏰ Ish vaqti: 10:00 — 21:00 (har kuni)
-📞 Telefon: +998 90 000 00 00
+⏰ Ish vaqti: 10:00 - 21:00 (har kuni)
+📞 Telefon: +998 87 901 85 85
 
 ✅ 100% original krossovkalar
-🚚 Toshkent bo'ylab yetkazib berish
-💳 Naqd va karta orqali to'lov
+🚚 Toshkent boylab yetkazib berish
+💳 Naqd va karta orqali tolov
 """
 
 def main_menu():
@@ -55,7 +56,7 @@ def main_menu():
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "👟 *G.Style.uz ga xush kelibsiz!*\n\nOriginal krossovkalar do'koni\n\nQuyidagilardan birini tanlang:",
+        "👟 *G.Style.uz ga xush kelibsiz!*\n\nOriginal krossovkalar dokoni\n\nQuyidagilardan birini tanlang:",
         parse_mode="Markdown",
         reply_markup=main_menu()
     )
@@ -65,10 +66,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     if query.data == "catalog":
-        await query.message.reply_text(CATALOG, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Bosh menyu", callback_data="menu")]]))
+        await query.message.reply_text(CATALOG, parse_mode="Markdown",
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Bosh menyu", callback_data="menu")]]))
 
     elif query.data == "info":
-        await query.message.reply_text(INFO, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Bosh menyu", callback_data="menu")]]))
+        await query.message.reply_text(INFO, parse_mode="Markdown",
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Bosh menyu", callback_data="menu")]]))
 
     elif query.data == "order":
         await query.message.reply_text("📝 *Buyurtma berish*\n\nIsmingizni kiriting:", parse_mode="Markdown")
@@ -82,17 +85,17 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def ask_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['name'] = update.message.text
-    await update.message.reply_text(f"Rahmat, {update.message.text}! 📞 Telefon raqamingizni kiriting:")
+    await update.message.reply_text(f"Rahmat! 📞 Telefon raqamingizni kiriting:")
     return ASK_PHONE
 
 async def ask_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['phone'] = update.message.text
-    await update.message.reply_text("👟 Qaysi model krossovka kerak? (masalan: Nike Air Force 1):")
+    await update.message.reply_text("👟 Qaysi model krossovka kerak?")
     return ASK_MODEL
 
 async def ask_model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['model'] = update.message.text
-    await update.message.reply_text("📏 O'lcham (razmer) kiriting (masalan: 42):")
+    await update.message.reply_text("📏 Razmer kiriting (masalan: 42):")
     return ASK_SIZE
 
 async def ask_size(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -102,14 +105,7 @@ async def ask_size(update: Update, context: ContextTypes.DEFAULT_TYPE):
     model = context.user_data['model']
     size = context.user_data['size']
 
-    summary = f"""✅ *Buyurtmangiz qabul qilindi!*
-
-👤 Ism: {name}
-📞 Telefon: {phone}
-👟 Model: {model}
-📏 O'lcham: {size}
-
-Tez orada siz bilan bog'lanamiz! 🙏"""
+    summary = f"✅ *Buyurtma qabul qilindi!*\n\n👤 Ism: {name}\n📞 Telefon: {phone}\n👟 Model: {model}\n📏 Razmer: {size}\n\nTez orada boglanamiz! 🙏"
 
     await update.message.reply_text(summary, parse_mode="Markdown", reply_markup=main_menu())
     return ConversationHandler.END
@@ -120,7 +116,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Savolingiz uchun rahmat! Tez orada javob beramiz 🙏\n\nYoki bosh menyuga qayting:",
+        "Savolingiz uchun rahmat! Tez orada javob beramiz 🙏\n\nBosh menyu:",
         reply_markup=main_menu()
     )
 
