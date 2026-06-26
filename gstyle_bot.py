@@ -12,7 +12,7 @@ from telegram.ext import (
 import os
 
 TELEGRAM_TOKEN = os.environ.get("TOKEN")
-GEMINI_API_KEY = AQ.Ab8RN6IfWDdxz4mxj6UoHWtkvFaHj5tfrWYi5hy3E-fQDJBv1Q"
+GEMINI_API_KEY = "AQ.Ab8RN6IfWDdxz4mxj6UoHWtkvFaHj5tfrWYi5hy3E-fQDJBv1Q"
 MANAGER_USERNAME = "@SamandarGayratovic"
 INSTAGRAM_URL = "https://www.instagram.com/g.style.uz"
 KATALOG_URL = "https://t.me/g_style_uz"
